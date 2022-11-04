@@ -1,0 +1,35 @@
+version: '3.6'
+services:
+  frps_bookstack:
+    image: rayruan/amd64_frp:0.45.0
+    container_name: frps_bookstack
+    ports:
+      - "${FRPS_BIND_PORT:-7000}:${FRPS_BIND_PORT:-7000}"
+    expose:
+      - "${VIRTUAL_PORT:-8001}" 
+    environment:
+      PUID: 1000
+      PGID: 1000
+      HTTPS_METHOD: nohttps
+#      LETSENCRYPT_HOST: "${LETSENCRYPT_HOST:-bar.com}"
+      VIRTUAL_PORT: "${VIRTUAL_PORT:-8001}"
+      VIRTUAL_HOST: "${VIRTUAL_HOST:-foo.bar.com}"
+      VIRTUAL_PATH: "${VIRTUAL_PAHT:-/}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ${FRPS_INSTALL_ROOT_PATH:-./}/${FRPS_CFGS_DIR:-cfgs}/frps.ini:/etc/frp/frps.ini
+      - ${FRPS_INSTALL_ROOT_PATH:-./}/frps_entrypoint.sh:/app/frps_entrypoint.sh
+      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/frps/server.crt:/server.crt
+      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/frps/server.key:/server.key
+      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/rootCA.crt:/rootCA.crt
+    entrypoint: /app/frps_entrypoint.sh
+    networks:
+      - "nginx-proxy"
+    restart: unless-stopped
+    
+networks:
+  nginx-proxy:
+    external: true
+    name: "nginx-proxy"
+

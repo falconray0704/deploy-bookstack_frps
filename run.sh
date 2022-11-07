@@ -27,6 +27,23 @@ else
 fi
 
 
+. ./src/.env
+
+#SUPPORTED_CMD="deploy"
+#SUPPORTED_TARGETS="bookstack_frps"
+
+#EXEC_CMD=""
+#EXEC_ITEMS_LIST=""
+
+#DEPLOY_ROOT=${HOME}/servers
+#BOOKSTACK_FRPS_DIR=bookstack_frps
+#BOOKSTACK_FRPS_HOME=${DEPLOY_ROOT}/${BOOKSTACK_FRPS_DIR}
+
+#################################################
+DEPLOY_ROOT=${INSTALL_ROOT_PATH}
+
+SERVER_DIR=${SERVER_NAME}
+SERVER_HOME=${DEPLOY_ROOT}/${SERVER_DIR}
 
 SUPPORTED_CMD="deploy"
 SUPPORTED_TARGETS="bookstack_frps"
@@ -34,9 +51,7 @@ SUPPORTED_TARGETS="bookstack_frps"
 EXEC_CMD=""
 EXEC_ITEMS_LIST=""
 
-DEPLOY_ROOT=${HOME}/servers
-BOOKSTACK_FRPS_DIR=bookstack_frps
-BOOKSTACK_FRPS_HOME=${DEPLOY_ROOT}/${BOOKSTACK_FRPS_DIR}
+
 
 deploy_bookstack_frps()
 {
@@ -44,16 +59,19 @@ deploy_bookstack_frps()
     then
         echoR "Deploy root path:${DEPLOY_ROOT} does not exsist, create it manully first!!!"
         exit 1
-    elif [ -d ${BOOKSTACK_FRPS_HOME} ]
+    elif [ -d ${SERVER_HOME} ]
     then
-        echoY "Already deployed bookstack_frps in ${BOOKSTACK_FRPS_HOME}, check it there first!"
+        echoY "Already deployed ${SERVER_NAME} in ${SERVER_HOME}, check it there first!"
         exit 1
     else
-        echoY "Deploying bookstack_frps..."
-        cp -a ./src ${BOOKSTACK_FRPS_HOME}
-        echoG "bookstack_frps has been deployed to ${BOOKSTACK_FRPS_HOME} successfully."
-        cat ./src/README.md
+        echoY "Deploying ${SERVER_NAME}..."
+        cp -a ./src ${SERVER_HOME}
+
+        mkdir -p ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}
+
+        echoG "${SERVER_NAME} has been deployed to ${DEPLOY_ROOT}/${SERVER_HOME} successfully."
     fi
+        cat ./src/README.md
 }
 
 usage_func()
@@ -61,7 +79,7 @@ usage_func()
 
     echoY "Usage:"
     echoY './run.sh -c <cmd> -l "<item list>"'
-    echoY "eg:\n./run.sh -c deploy -l \"bookstack_frps\""
+    echoY "eg:\n./run.sh -c deploy -l \"${SERVER_NAME}\""
 
     echoC "Supported cmd:"
     echo "${SUPPORTED_CMD}"

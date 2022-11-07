@@ -18,11 +18,11 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ${FRPS_INSTALL_ROOT_PATH:-./}/${FRPS_CFGS_DIR:-cfgs}/frps.ini:/etc/frp/frps.ini
-      - ${FRPS_INSTALL_ROOT_PATH:-./}/frps_entrypoint.sh:/app/frps_entrypoint.sh
-      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/frps/server.crt:/server.crt
-      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/frps/server.key:/server.key
-      - ${SELFSIGNED_CERTS_ROOT_PATH:-./selfsigned_rootCA}/rootCA.crt:/rootCA.crt
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${CFGS_DIR}/frps.ini:/etc/frp/frps.ini:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/frps_entrypoint.sh:/app/frps_entrypoint.sh:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/frps/server.crt:/server.crt:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/frps/server.key:/server.key:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/rootCA.crt:/rootCA.crt:ro
     entrypoint: /app/frps_entrypoint.sh
     networks:
       - "nginx-proxy"

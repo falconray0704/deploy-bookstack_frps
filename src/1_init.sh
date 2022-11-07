@@ -13,11 +13,11 @@ set -e
 
 source .env
 
-rm -rf ${SELFSIGNED_CERTS_ROOT_PATH}
-mkdir -p ${SELFSIGNED_CERTS_ROOT_PATH}
+rm -rf ${SELFSIGNED_CERTS_DIR}
+mkdir -p ${SELFSIGNED_CERTS_DIR}
 
 
-pushd ${SELFSIGNED_CERTS_ROOT_PATH}
+pushd ${SELFSIGNED_CERTS_DIR}
 
 # root CA
 #openssl rand -out ${HOME}/.rnd -hex 256
@@ -89,5 +89,5 @@ openssl x509 -req -days 365 -sha256 \
 
 popd
 
-tree -a ${SELFSIGNED_CERTS_ROOT_PATH}
+tree -a ${SELFSIGNED_CERTS_DIR}
 

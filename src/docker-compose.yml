@@ -1,10 +1,10 @@
 version: '3.6'
 services:
   frps_bookstack:
-    image: rayruan/amd64_frp:0.45.0
+    image: rayruan/amd64_frp:0.51.3
     container_name: frps_bookstack
     ports:
-      - "${FRPS_BIND_PORT:-7000}:${FRPS_BIND_PORT:-7000}"
+      - "${FRPS_SERVER_IP}:${FRPS_BIND_PORT:-7000}:${FRPS_BIND_PORT:-7000}"
     expose:
       - "${VIRTUAL_PORT:-8001}" 
     environment:

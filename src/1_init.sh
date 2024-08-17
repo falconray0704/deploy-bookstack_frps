@@ -13,7 +13,15 @@ set -e
 
 source .env
 
-rm -rf ${SELFSIGNED_CERTS_DIR}
+timestamp()
+{
+    TIMESTAMP="$(date +%Y%m%d-%H%M%S)" 
+    echo ${TIMESTAMP}
+}
+TIME=$(timestamp)
+
+
+SELFSIGNED_CERTS_DIR="${SELFSIGNED_CERTS_DIR}_${TIME}"
 mkdir -p ${SELFSIGNED_CERTS_DIR}
 
 
@@ -90,4 +98,29 @@ openssl x509 -req -days 365 -sha256 \
 popd
 
 tree -a ${SELFSIGNED_CERTS_DIR}
+
+BACKUP_PATH=backups
+mkdir -p ${BACKUP_PATH}
+
+cp -a ${SELFSIGNED_CERTS_DIR} ${BACKUP_PATH}/
+
+
+rm -rf ${CERTS_DIR}
+rm -rf ${CERTS_DIR}_client
+
+
+mkdir -p ${CERTS_DIR}
+cp ${SELFSIGNED_CERTS_DIR}/frps/server.crt ${CERTS_DIR}/
+cp ${SELFSIGNED_CERTS_DIR}/frps/server.key ${CERTS_DIR}/
+cp ${SELFSIGNED_CERTS_DIR}/rootCA.crt ${CERTS_DIR}/
+
+tree -a ${CERTS_DIR}
+
+
+mkdir -p ${CERTS_DIR}_client
+cp ${SELFSIGNED_CERTS_DIR}/frpc/client.crt "${CERTS_DIR}_client"/
+cp ${SELFSIGNED_CERTS_DIR}/frpc/client.key "${CERTS_DIR}_client"/
+cp ${SELFSIGNED_CERTS_DIR}/rootCA.crt "${CERTS_DIR}_client"/
+
+tree -a "${CERTS_DIR}_client"
 

@@ -6,7 +6,7 @@
 # nginx-proxy environments
 
 # The port your App listen on.
-VIRTUAL_PORT: 80
+VIRTUAL_PORT: 6875
 
 # The (sub)domain of your application.
 VIRTUAL_HOST: "sub.domain.com"
@@ -16,17 +16,17 @@ VIRTUAL_HOST: "sub.domain.com"
 FRPS_BIND_PORT=7001
 
 ## Deploy root path, default is current directory.
-FRPS_INSTALL_ROOT_PATH='./'
+INSTALL_ROOT_PATH=/opt/servers
+
+## Directory for deployment at INSTALL_ROOT_PATH
+SERVER_NAME=bookstack_frps_ray
 
 ## Directory name for configuration file of frps, default is cfgs at current directory.
-FRPS_CFGS_DIR='cfgs'
+CFGS_DIR='cfgs'
 
 
 
 # Selfsigned certificates parameters for `1_init.sh`
-
-## Location for selfsigned certificate creation.
-SELFSIGNED_CERTS_ROOT_PATH='./selfsigned_rootCA'
 
 ## Server domain for CA, here is same as FRPS_SERVER_DOMAIN for selfsigned certificates.
 CA_SERVER_DOMAIN='domain.com'
@@ -42,6 +42,9 @@ FRPS_SERVER_IP='192.168.0.1'
 ## 1.2 Specify following variables in `cfgs/frps.ini` file for your domain.
 Just refer to official document.
 The most required variables are:
+
+* `bind_port` : Listening port for frpc connection.
+* `vhost_http_port` : The port which frpc required to expose.
 
 * `token` : token for authentication between frpc and frps.
 * `subdomain_host` : subdomain for frps routing.

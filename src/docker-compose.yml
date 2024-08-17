@@ -1,8 +1,8 @@
 version: '3.6'
 services:
   frps_bookstack:
-    image: rayruan/amd64_frp:0.51.3
-    container_name: frps_bookstack
+    image: "rayruan/amd64_frp:${FRP_VERSION:-0.51.3}"
+    container_name: "${SERVER_NAME:-frps_bookstack}"
     ports:
       - "${FRPS_SERVER_IP}:${FRPS_BIND_PORT:-7000}:${FRPS_BIND_PORT:-7000}"
     expose:
@@ -20,9 +20,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${CFGS_DIR}/frps.ini:/etc/frp/frps.ini:ro
       - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/frps_entrypoint.sh:/app/frps_entrypoint.sh:ro
-      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/frps/server.crt:/server.crt:ro
-      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/frps/server.key:/server.key:ro
-      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}/rootCA.crt:/rootCA.crt:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${CERTS_DIR}/server.crt:/server.crt:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${CERTS_DIR}/server.key:/server.key:ro
+      - ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${CERTS_DIR}/rootCA.crt:/rootCA.crt:ro
     entrypoint: /app/frps_entrypoint.sh
     networks:
       - "nginx-proxy"

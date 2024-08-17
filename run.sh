@@ -53,7 +53,7 @@ EXEC_ITEMS_LIST=""
 
 
 
-deploy_bookstack_frps()
+deploy_frps_bookstack()
 {
     if [ ! -d ${DEPLOY_ROOT} ]
     then
@@ -67,11 +67,9 @@ deploy_bookstack_frps()
         echoY "Deploying ${SERVER_NAME}..."
         cp -a ./src ${SERVER_HOME}
 
-        mkdir -p ${INSTALL_ROOT_PATH}/${SERVER_NAME}/${SELFSIGNED_CERTS_DIR}
-
         echoG "${SERVER_NAME} has been deployed to ${DEPLOY_ROOT}/${SERVER_HOME} successfully."
-    fi
         cat ./src/README.md
+    fi
 }
 
 usage_func()
@@ -79,7 +77,7 @@ usage_func()
 
     echoY "Usage:"
     echoY './run.sh -c <cmd> -l "<item list>"'
-    echoY "eg:\n./run.sh -c deploy -l \"${SERVER_NAME}\""
+    echoY "eg:\n./run.sh -c deploy -l frps_bookstack"
 
     echoC "Supported cmd:"
     echo "${SUPPORTED_CMD}"

@@ -122,5 +122,7 @@ cp ${SELFSIGNED_CERTS_DIR}/frpc/client.crt "${CERTS_DIR}_client"/
 cp ${SELFSIGNED_CERTS_DIR}/frpc/client.key "${CERTS_DIR}_client"/
 cp ${SELFSIGNED_CERTS_DIR}/rootCA.crt "${CERTS_DIR}_client"/
 
+tar -zcf ${CERTS_DIR}_client_${TIME}.tar.gz ${CERTS_DIR}_client
+
 tree -a "${CERTS_DIR}_client"
 
